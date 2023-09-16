@@ -11,14 +11,17 @@ conection.connect((err) => {
   if (err) throw err;
 });
 
-console.log("La conecxion funciona");
+console.log("La conexion funciona");
 
 let consultation = conection.query(
-  "SELECT Index1,Name,Country FROM provider ORDER BY Index1 DESC",
+  "SELECT Country, COUNT(*) AS provider_count FROM provider GROUP BY Country ORDER BY provider_count DESC",
   (err, rows) => {
     if (err) throw err;
-    console.log("Los datos de la tabla son estos");
-    console.log(rows);
+    console.table("Los datos de la tabla son estos");
+    console.table(rows);
+
+    let filtro = rows.filter((e) => e.provider_count > 8400);
+    console.table(filtro);
   }
 );
 
